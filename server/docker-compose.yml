@@ -1,0 +1,24 @@
+version: "3.9"
+
+services:
+  todo-list-app-postgres:
+    env_file:
+      - .env
+    image: "postgres:15-alpine"
+    container_name: todo-list-app-local
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_DB=${DB_NAME}
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
+    ports:
+      - "${DB_PORT}:5432"
+  todo-pgAdmin:
+    image: dpage/pgadmin4
+    container_name: todo-pgAdmin-local
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${DB_CLIENT_USERNAME}
+      - PGADMIN_DEFAULT_PASSWORD=${DB_CLIENT_PASSWORD}
+    ports:
+      - "${DB_CLIENT_PORT}:80"
